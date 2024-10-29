@@ -1,2 +1,99 @@
-#GUI design
-#Last edited on 10/24/24
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- 
+   HTML file for calendar page design
+   -->
+
+<head>
+  <meta charset="UTF-8">
+  <!-- Make width and length adjust to window size -->
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+  <!-- Link to CSS file -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Link to font-->
+  <link href="https://fonts.googleapis.com/css?family=Jacques+Francois&display=swap" rel="stylesheet" />
+  <!-- Link to Quill (Text editing library) -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js" defer></script>
+  <!-- Link to FullCalendar-->
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+  <script src="script.js" defer></script>
+</head>
+
+<!-- 
+Structure of elements for index.html:
+-Header
+-Menu
+-Calendar. Todo, Add event
+ -->
+
+<body>
+  <!-- Create main container-->
+  <div id="app-container">
+    <!-- Create header-->
+    <div id="header">
+      <!-- Create title "My Calendar"-->
+      <h1 id="app-title">My Calendar</h1>
+      <!-- Create menu button-->
+      <div id="menu-container">
+        <button id="menu-button">Menu</button>
+      </div>
+    </div>
+
+
+    <!-- Create a list of indexes for menu-->
+    <div id="menu-list" class="hidden">
+      <ul>
+        <li><a href="#">Login page</a></li>
+        <li><a href="#">Calendar</a></li>
+        <li><a href="#">Map</a></li>
+      </ul>
+    </div>
+
+    <!-- Create main container for calendar, todo-list and add-event-->
+
+    <div id="main-content">
+      <div id="calendar"></div>
+      <div id="todo-list">
+        <h2>Todo List</h2>
+        <ul id="todos"></ul>
+        <input type="text" id="new-todo" placeholder="Add a new todo!">
+        <button id="add-todo">Add</button>
+        <h3>Add event</h3>
+        <button id="open-modal">Add Event</button>
+      </div>
+
+    </div>
+
+    <!-- Create window  -->
+    <div id="eventModal" class="modal">
+      <div class="modal-content">
+        <!-- Create close button  -->
+        <span class="close">&times;</span>
+        <!-- Create add event entry box -->
+        <div class="form-group">
+          <label for="event-title">Event name:</label>
+          <input type="text" id="event-title" placeholder="Event Title" required>
+        </div>
+        <!-- Create start time entry box -->
+        <div class="form-group">
+          <label for="event-start">Start time:</label>
+          <input type="datetime-local" id="event-start" required>
+        </div>
+        <!-- Create end time entry box -->
+        <div class="form-group">
+          <label for="event-end">End time:</label>
+          <input type="datetime-local" id="event-end">
+        </div>
+        <!-- Create note box with Quill -->
+        <div class="form-group">
+          <label for="event-notes">Notes:</label>
+          <div id="quill-editor"></div> <!-- Quill editor -->
+        </div>
+        <!-- Create add event button-->
+        <button id="add-event-button">Add Event</button>
+      </div>
+    </div>
+
+</body>
