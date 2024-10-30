@@ -15,6 +15,12 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
+    //suggested by reddit, it works without this code
+    //but I'm leaving it here just in case
+// app.get('/css', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, 'public/main.css'));
+// });
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
