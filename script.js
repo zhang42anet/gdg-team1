@@ -47,6 +47,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const todoList = document.getElementById('todos');
   const newTodoInput = document.getElementById('new-todo');
   const addTodoButton = document.getElementById('add-todo');
+  const completedList = document.getElementById('completed-todos');
+  const showButton = document.getElementById('show');
 
   //Check if elements in todo list exist
   if (todoList && newTodoInput && addTodoButton) {
@@ -68,7 +70,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Completed!';
         deleteButton.addEventListener('click', function () {
-          li.remove();
+          completedList.appendChild(li);
+          li.removeChild(deleteButton); 
         });
         //Add "Completed" and new item to todo list
         li.appendChild(deleteButton);
@@ -80,6 +83,18 @@ document.addEventListener('DOMContentLoaded', function () {
   } else {
     console.error('Todo list elements not found');
   }
+
+// Show/Hide completed items
+showButton.onclick = function () {
+  if (completedList.style.display === "none" || completedList.classList.contains('hidden')) {
+      completedList.style.display = "block"; 
+      showButton.textContent = 'Hide'; 
+  } else {
+      completedList.style.display = "none"; 
+      showButton.textContent = 'Show'; 
+  }
+};
+
 
   //Add event window
   var modal = document.getElementById("eventModal");
