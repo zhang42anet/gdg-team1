@@ -208,7 +208,7 @@ Style for elements inside calendar
 }
 
 /* Todo list*/
-#todos {
+#todos, #completed-todos{
     list-style-type: none;
     /* Remove bullet points */
     padding: 0;
@@ -227,7 +227,7 @@ Style for elements inside calendar
 }
 
 /* Todo items */
-#todos li {
+#todos li, #completed-todos li {
     background-color: rgba(155, 191, 228, 0.18);
     border-radius: 4px;
     padding: 8px;
@@ -241,7 +241,7 @@ Style for elements inside calendar
 }
 
 /* Todo text */
-#todos li span {
+#todos li span, #completed-todos li span {
     flex-grow: 1;
     color: rgba(73, 63, 38, 0.8);
     text-align: left;
@@ -264,7 +264,6 @@ Style for elements inside calendar
 #todos li button:hover {
     background-color: rgba(55, 101, 24, 0.95);
 }
-
 /* Todo entry box*/
 #todo-input-container {
     display: flex;
@@ -278,10 +277,11 @@ Style for elements inside calendar
     border-radius: 4px;
     font-size: 14px;
     margin-right: 8px;
+    margin-bottom: 8px;
 }
 
 /* Add button */
-#add-todo {
+#add-todo, #show {
     background-color: rgba(73, 63, 38, 0.5);
     color: white;
     border: none;
@@ -290,25 +290,16 @@ Style for elements inside calendar
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
+    margin-bottom: 8px;
 }
 
-#add-todo:hover {
+#add-todo,#show:hover {
     background-color: rgba(73, 63, 38, 0.7);
 }
 
 /*
 Style for Add event
 */
-
-/*Add event text*/
-#todo-list h3 {
-    margin-top: 15px;
-    margin-bottom: 15px;
-    padding-top: 0;
-    color: rgba(73, 63, 38, 0.8);
-    font-size: 24px;
-    font-family: 'Jacques Francois', serif !important;
-}
 
 /* Add Event button */
 #open-modal {
@@ -474,4 +465,3 @@ Style for menu list
 #menu-list a:hover {
     color: grey;
 }
-
