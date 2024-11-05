@@ -1,0 +1,8 @@
+body {
+    background-image: url('campusMap.png'); /* Path to the PNG image */
+    background-size: cover; /* Cover the entire viewport */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    height: 100vh; /* Full viewport height */
+    margin: 0; /* Remove default margin */
+}
