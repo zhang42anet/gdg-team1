@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Jacques+Francois&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=IM+FELL+Great+Primer&display=swap" rel="stylesheet" />
+    <link href="login.css" rel="stylesheet" />
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="window">
+        <div id="login-frame">
+            <h1>Login</h1>
+            <input type="text" id="username" placeholder="Email" /> 
+            <input type="password" id="password" placeholder="Password" /> 
+            <!-- changed 'forget' to 'forgot'-->
+            <h2>Forgot password?</h2>
+            <button id="sign-in">Sign in</button>
+            <!-- script redirects users to index.html-->
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    // Redirect for Sign In button
+                    document.getElementById('sign-in').addEventListener('click', () => {
+                        window.location.href = '/'; // Redirect to the root, serving index.html
+                    });
+        
+                    // Redirect for Sign Up button
+                    document.getElementById('sign-up').addEventListener('click', () => {
+                        window.location.href = '/index.html'; // Redirect to index.html
+                    });
+                });
+            </script>
+            <!-- register: redirects user to sign up page -->
+            <h2>
+                <a href="signUp.html" style="text-decoration: underline; color: grey;">Don't have an account? Register</a>
+            </h2>
+        </div>
+    </div>
+</body>
+
+</html>
