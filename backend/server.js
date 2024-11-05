@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -15,11 +14,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
-    //suggested by reddit, it works without this code
-    //but I'm leaving it here just in case
-// app.get('/css', (req, res) => {
-//     res.sendFile(path.resolve(__dirname, 'public/main.css'));
-// });
+//route to serve login.html
+app.get('/login.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public', 'login.html'));
+});
 
 // Start the server
 app.listen(PORT, () => {

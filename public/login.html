@@ -15,11 +15,29 @@
     <div id="window">
         <div id="login-frame">
             <h1>Login</h1>
-            <input type="text" id="username" placeholder="Username" /> <!-- Changed to text input -->
-            <input type="password" id="password" placeholder="Password" /> <!-- Changed to password input -->
-            <h2>Forget password?</h2>
+            <input type="text" id="username" placeholder="Email" /> 
+            <input type="password" id="password" placeholder="Password" /> 
+            <!-- changed 'forget' to 'forgot'-->
+            <h2>Forgot password?</h2>
             <button id="sign-in">Sign in</button>
-            <h2>Don't have an account? Register</h3>
+            <!-- script redirects users to index.html-->
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    // Redirect for Sign In button
+                    document.getElementById('sign-in').addEventListener('click', () => {
+                        window.location.href = '/'; // Redirect to the root, serving index.html
+                    });
+        
+                    // Redirect for Sign Up button
+                    document.getElementById('sign-up').addEventListener('click', () => {
+                        window.location.href = '/index.html'; // Redirect to index.html
+                    });
+                });
+            </script>
+            <!-- register: redirects user to sign up page -->
+            <h2>
+                <a href="signUp.html" style="text-decoration: underline; color: grey;">Don't have an account? Register</a>
+            </h2>
         </div>
     </div>
 </body>
