@@ -1,4 +1,3 @@
-//Load content of html into the current  file
 document.addEventListener('DOMContentLoaded', function () {
 
   //Load in main container 
@@ -118,40 +117,30 @@ showButton.onclick = function () {
     }
   }
 
-  // Initialize Quill notepad
-  var quill = new Quill('#quill-editor', {
-    theme: 'snow',
-    modules: {
-      toolbar: [
-        ['bold', 'italic', 'underline'],
-        ['image'],
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-        [{ 'size': ['small', 'large', 'huge'] }]
-      ]
-    }
-  });
 
   document.getElementById("add-event-button").onclick = function () {
     const title = document.getElementById('event-title').value.trim();
     const start = document.getElementById('event-start').value;
     const end = document.getElementById('event-end').value;
-    const notes = quill.root.innerHTML;
+    const location = document.getElementById('event-location').value;
+    const notes = document.getElementById('event-notes').value;
 
-    if (title && start) {//Check for null entry in title and start date
+    if (title && start) {
       const event = {
         title: title,
         start: start,
         end: end || null,
-        notes: notes
+        location: location || null,
+        notes: notes || null
       };
-
       calendar.addEvent(event);
 
-      //Clear entry fields
+      // Clear entry fields
       document.getElementById('event-title').value = '';
       document.getElementById('event-start').value = '';
       document.getElementById('event-end').value = '';
-      quill.setContents([]);
+      document.getElementById('event-location').value = '';
+      document.getElementById('event-notes').value = '';
 
       // Close the add event window
       modal.style.display = "none";
@@ -159,6 +148,32 @@ showButton.onclick = function () {
       alert('Please fill in event title and start time.');
     }
   };
+  calendar.on('eventClick', function(info) {
+    const event = info.event;
+
+    // Populate the modal fields with event details
+    document.getElementById('event-title').value = event.title || ''; // Set the title
+
+    // Format the start and end values for datetime-local
+    document.getElementById('event-start').value = event.start ? formatDateForInput(event.start) : ''; // Format for datetime-local
+    document.getElementById('event-end').value = event.end ? formatDateForInput(event.end) : ''; // Format for datetime-local
+
+    document.getElementById('event-location').value = event.location || ''; // Set the location
+    document.getElementById('event-notes').value = event.notes || ''; // Set the notes in the textarea
+
+    // Show the modal
+    modal.style.display = "block"; // Display the modal
+  });
+
+  // Function to format date for datetime-local input
+  function formatDateForInput(date) {
+    const localDate = new Date(date); // Create a new Date object
+    const offset = localDate.getTimezoneOffset(); // Get timezone offset in minutes
+    localDate.setMinutes(localDate.getMinutes() - offset); // Adjust for timezone offset
+    // Format to YYYY-MM-DDTHH:MM
+    return localDate.toISOString().slice(0, 16);
+  }
+
 });
 
 /*Menu*/

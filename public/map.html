@@ -1,14 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Background Image Page</title>
-        <link rel="stylesheet" href="map.css"> <!-- Link to your CSS file -->
-    </head>
-    <body>
-        <h2>
-            <a href="index.html" style="text-decoration: underline; color: grey;">Back to Calendar</a>
-        </h2>
-    </body>
+
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Jacques+Francois&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="map.css">
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDw741tEW3p4fJCitWFLPqZ_coRqXkxmCk&libraries=places&callback=initMap"
+    async defer></script>
+  <script src="map.js"></script>
+</head>
+
+<body>
+  <!-- Create a list of indexes for menu-->
+  <div id="header">
+    <!-- Create title "My Calendar"-->
+    <h1 id="app-title">Campus Map</h1>
+    <!-- Create menu button-->
+    <div id="menu-container">
+      <button id="menu-button">Menu</button>
+    </div>
+  </div>
+  <div id="menu-list" class="hidden">
+    <ul>
+      <li><a href="login.html">Login page</a></li>
+      <li><a href="index.html">Calendar</a></li>
+      <li><a href="map.html">Campus Map</a></li>
+      <!-- <li><a href="#">Map</a></li> -->
+    </ul>
+  </div>
+
+  <div id="map-frame">
+    <div id="map"></div> <!-- Map container -->
+    <div id="search-container">
+      <h3 id="search-title">Search for places</h3>
+      <input id="search-input" type="text" placeholder="Search for places..." />
+      <div id="autocomplete-list"></div> <!-- Autocomplete suggestions -->
+      <h3 id="current">Show current location</h3>
+      <button id="show-current">Hide</button>
+      <h3 id="route">Route to location searched</h3>
+      <button id="show-route">Show route</button>
+      <h3 id="event-location">Event location</h3>
+      <button id="show-event">Show event location</button>
+    </div>
+  </div>
+  </body>
+
+
 </html>

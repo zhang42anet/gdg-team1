@@ -293,7 +293,7 @@ Style for elements inside calendar
     margin-bottom: 8px;
 }
 
-#add-todo,#show:hover {
+#add-todo:hover,#show:hover {
     background-color: rgba(73, 63, 38, 0.7);
 }
 
@@ -395,14 +395,10 @@ input[type="datetime-local"] {
 
 /* Notepad */
 
-#quill-editor {
-    height: 150px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+#event-notes{
     background-color: #FDF3E1;
+    width: 100%;
 }
-
 /* Add event button */
 
 #add-event-button {
@@ -441,6 +437,9 @@ Style for menu list
     display: flex;
     flex-direction: column;
     padding: 10px;
+    font-weight: bold;
+    font-family: 'Jacques Francois', serif !important;
+
 }
 
 #menu-list.hidden {
