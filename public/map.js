@@ -11,7 +11,7 @@ let currentLocationVisible = false; // Track whether the current location marker
 let eventMarkers = []; // Array to store event markers
 let eventLocationsVisible = false; // Track whether event locations are visible
 
-window.initMap = function() {
+window.initMap = function () {
     const MHC = { lat: 42.2550, lng: -72.5770 };
     map = new google.maps.Map(document.getElementById("map"), {
         center: MHC,
@@ -40,7 +40,7 @@ window.initMap = function() {
     });
 
     // Add event listener for the show/hide route button
-    document.getElementById("show-route").addEventListener("click", function() {
+    document.getElementById("show-route").addEventListener("click", function () {
         if (routeVisible) {
             hideRoute();
         } else {
@@ -49,7 +49,7 @@ window.initMap = function() {
     });
 
     // Add event listener for the show/hide current location button
-    document.getElementById("show-current").addEventListener("click", function() {
+    document.getElementById("show-current").addEventListener("click", function () {
         if (currentLocationVisible) {
             hideCurrentLocation();
         } else {
@@ -58,7 +58,7 @@ window.initMap = function() {
     });
 
     // Add event listener for the show/hide event locations button
-    document.getElementById("show-event").addEventListener("click", function() {
+    document.getElementById("show-event").addEventListener("click", function () {
         if (eventLocationsVisible) {
             hideEventLocations();
         } else {
@@ -197,6 +197,13 @@ function showCurrentLocation() {
             });
 
             // Center the map on the user's current location
+            infoWindow = new google.maps.InfoWindow({
+                content: `
+                <div style="width: 120px">
+                    <p>You are here!</p>
+                </div> 
+            `});
+            infoWindow.open(map, currentLocationMarker);
             map.setCenter(currentLocation);
             currentLocationVisible = true; // Set visibility to true
             document.getElementById("show-current").textContent = "Hide"; // Change button text
@@ -237,7 +244,7 @@ const events = [
     {
         name: "Meeting at Blanch",
         time: "2023-10-01T10:00:00",
-        location: "Blanchard", 
+        location: "Blanchard",
         notes: "Discuss project updates."
     },
 ];
@@ -260,9 +267,8 @@ async function showEventLocations() {
                 }
             });
 
-            // Add click event listener to the marker
-            google.maps.event.addListener(marker, 'click', function() {
-                infowindow.setContent(`
+
+            infowindow.setContent(`
                     <div>
                         <h3>${event.name}</h3>
                         <p><strong>Time:</strong> ${new Date(event.time).toLocaleString()}</p>
@@ -270,9 +276,7 @@ async function showEventLocations() {
                         <p><strong>Notes:</strong> ${event.notes}</p>
                     </div>
                  `);
-                infowindow.open(map, marker);
-            });
-
+            infowindow.open(map, marker);
             eventMarkers.push(marker); // Store the marker in the array
         } catch (error) {
             console.error(error); // Handle errors (e.g., place not found)
@@ -295,21 +299,21 @@ function hideEventLocations() {
 document.addEventListener('DOMContentLoaded', function () {
     var menuButton = document.getElementById('menu-button');
     var menuList = document.getElementById('menu-list');
-  
+
     // Show the menu when the button is clicked
     menuButton.onclick = function (event) {
-      event.stopPropagation(); // Prevent affecting parent elements like the window
-      menuList.classList.toggle('hidden'); // If the window is closed, open it, and vise versa
+        event.stopPropagation(); // Prevent affecting parent elements like the window
+        menuList.classList.toggle('hidden'); // If the window is closed, open it, and vise versa
     };
-  
+
     // Closing the menu when clicking anywhere outside of it in the window
     window.onclick = function (event) {
-      //checks if menu is visable and if the click does not occur on menu button
-      if (!menuList.classList.contains('hidden') && !menuButton.contains(event.target)) {
-        menuList.classList.add('hidden');
-      }
+        //checks if menu is visable and if the click does not occur on menu button
+        if (!menuList.classList.contains('hidden') && !menuButton.contains(event.target)) {
+            menuList.classList.add('hidden');
+        }
     };
-  });
+});
 
 // Initialize the map
 initMap();

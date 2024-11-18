@@ -125,6 +125,8 @@ showButton.onclick = function () {
     const location = document.getElementById('event-location').value;
     const notes = document.getElementById('event-notes').value;
 
+    console.log(notes);
+
     if (title && start) {
       const event = {
         title: title,
@@ -151,6 +153,8 @@ showButton.onclick = function () {
   calendar.on('eventClick', function(info) {
     const event = info.event;
 
+    const location = event.extendedProps.location; // Access custom location
+    const notes = event.extendedProps.notes; // Access custom notes
     // Populate the modal fields with event details
     document.getElementById('event-title').value = event.title || ''; // Set the title
 
@@ -158,8 +162,8 @@ showButton.onclick = function () {
     document.getElementById('event-start').value = event.start ? formatDateForInput(event.start) : ''; // Format for datetime-local
     document.getElementById('event-end').value = event.end ? formatDateForInput(event.end) : ''; // Format for datetime-local
 
-    document.getElementById('event-location').value = event.location || ''; // Set the location
-    document.getElementById('event-notes').value = event.notes || ''; // Set the notes in the textarea
+    document.getElementById('event-location').value = location || ''; // Set the location
+    document.getElementById('event-notes').value = notes || ''; // Set the notes in the textarea
 
     // Show the modal
     modal.style.display = "block"; // Display the modal
