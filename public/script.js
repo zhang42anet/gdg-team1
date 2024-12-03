@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
             currentEvent.setExtendedProp('notes', notes); // Update the notes
             currentEvent.setExtendedProp('isWeekly', isWeekly); // Update the weekly status
               // Create new occurrences for the updated weekly event
-              for (let i = 1; i < 26; i++) { // Example: Create 10 occurrences
+              for (let i = 1; i < 26; i++) { // Example: Create 26 occurrences
                   const nextWeek = new Date(start);
                   nextWeek.setDate(start.getDate() + (i * 7)); // Add 7 days for each occurrence
                   calendar.addEvent({
