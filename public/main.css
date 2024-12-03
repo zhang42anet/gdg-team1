@@ -365,6 +365,16 @@ label {
     /* Fixed width*/
     font-family: 'Jacques Francois', serif !important;
     color: rgba(73, 63, 38);
+
+}
+
+label2{
+    width: 150px;
+    /* Fixed width*/
+    font-family: 'Jacques Francois', serif !important;
+    color: rgba(73, 63, 38);
+    margin-bottom: 8px;
+    margin-left: 15px;
 }
 
 input[type="text"],
@@ -401,9 +411,13 @@ input[type="datetime-local"] {
 }
 /* Add event button */
 
-#add-event-button {
+#button-frame{
+    flex-direction: column;
+}
+
+#add-event-button, #delete-event-button {
     background-color: rgba(73, 63, 38, 0.5);
-    width: 50%;
+    width: 40%;
     justify-content: flex-end;
     color: white;
     border: none;
@@ -413,6 +427,10 @@ input[type="datetime-local"] {
     font-size: 14px;
     transition: background-color 0.3s ease;
     margin-left: 20px;
+}
+
+#delete-event-button{
+    background-color: rgb(231, 93, 93);
 }
 
 #add-event-button:hover {

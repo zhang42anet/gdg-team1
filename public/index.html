@@ -92,13 +92,21 @@ Structure of elements for index.html:
           <label for="event-location">Location:</label>
           <input type="text" id="event-location" placeholder="Location" required>
         </div>
+        <!-- Create a checkbox for recurring events -->
+        <label2>
+          <input type="checkbox" id="weekly-event">Weekly event
+        </label2>
         <!-- Create a textarea for notes -->
         <div class="form-group">
-            <label for="event-notes">Notes:</label>
-            <textarea id="event-notes" placeholder="Enter your notes here..." rows="8"></textarea>
+          <label for="event-notes">Notes:</label>
+          <textarea id="event-notes" placeholder="Enter your notes here..." rows="8"></textarea>
         </div>
-        <!-- Create add event button-->
-        <button id="add-event-button">Add Event</button>
+        <!-- Create add event and delete event button-->
+         <div id="button-frame">
+          <button id="add-event-button">Add Event</button>
+          <button id="delete-event-button">Delete Event</button>
+         </div>
+
       </div>
     </div>
 
