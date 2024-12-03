@@ -1,6 +1,6 @@
 //Load content of html into the current  file
 document.addEventListener('DOMContentLoaded', function () {
-
+// testing
   //Load in main container 
   var appContainer = document.getElementById('app-container');
   if (!appContainer) {
