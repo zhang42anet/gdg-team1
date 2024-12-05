@@ -97,10 +97,10 @@ async function listEvents(auth) {
   
   //Database connection
   const connection = await mysql.createConnection({
-    host: '138.110.195.38',
-    user: 'Annette',
+    host: '127.0.0.1', //138.110.198.81'
+    user: 'root',
     password: 'GDGsteam1!',
-    database: 'gdgsteam1'
+    database: 'GDGsT1'
   });
 
   console.log('Upcoming 5 events:');
