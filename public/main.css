@@ -369,6 +369,10 @@ Style for Add event
     margin-top: -2px;
 }
 
+#form-group-box{
+    flex-direction: column;
+}
+
 label {
     display: inline-block;
     /* Position label and input on the same line */
