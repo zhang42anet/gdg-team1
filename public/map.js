@@ -28,10 +28,8 @@ window.initMap = function () {
     directionsRenderer = new google.maps.DirectionsRenderer();
     directionsRenderer.setMap(map);
 
-    // Automatically show current location on map load
     showCurrentLocation();
 
-    // Add event listener for the show/hide current location button
     document.getElementById("show-current").addEventListener("click", function () {
         if (currentLocationVisible) {
             hideCurrentLocation();
@@ -42,16 +40,12 @@ window.initMap = function () {
 };
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Initialize autocomplete for all input fields
     initializeAutocomplete("search-input", "autocomplete-list");
     initializeAutocomplete("start-location", "autocomplete-list2");
     initializeAutocomplete("destination", "autocomplete-list3");
-
-    // Add event listener for the show route button
     document.getElementById("show-route").addEventListener("click", toggleRoute);
 });
 
-// Function to initialize autocomplete for a given input and list
 function initializeAutocomplete(inputId, listId) {
     const inputField = document.getElementById(inputId);
     const autocompleteList = document.getElementById(listId);
@@ -65,16 +59,15 @@ function initializeAutocomplete(inputId, listId) {
         }
     });
 
-    // Add click event listener for the list items
     autocompleteList.addEventListener("click", function (event) {
         if (event.target && event.target.matches("div")) {
             const placeId = event.target.getAttribute("data-place-id");
-            selectPlaceById(placeId, autocompleteList); 
+            const inputId = inputField.id;
+            selectPlaceById(placeId, autocompleteList, inputId); 
         }
     });
 }
 
-// Function to get autocomplete suggestions
 function getAutocompleteSuggestions(query, list, inputField) {
     const request = {
         input: query,
@@ -89,57 +82,42 @@ function getAutocompleteSuggestions(query, list, inputField) {
     });
 }
 
-// Function to display suggestions in the list
 function displayAutocompleteList(predictions, list, inputField) {
-    list.innerHTML = ''; // Clear previous suggestions
-    list.style.display = 'block'; // Show the list
-
-    // Position the list below the input field
-    const rect = inputField.getBoundingClientRect();
-    list.style.left = `${rect.left}px`;
-    list.style.top = `${rect.bottom}px`;
-    list.style.width = `${rect.width}px`; // Match the width of the input field
+    list.innerHTML = ''; 
+    list.style.display = 'block'; 
 
     predictions.forEach(prediction => {
         const item = document.createElement("div");
-        item.textContent = prediction.description; // Display the description
-        item.setAttribute("data-place-id", prediction.place_id); // Store place_id in a data attribute
+        item.textContent = prediction.description; 
+        item.setAttribute("data-place-id", prediction.place_id); 
         list.appendChild(item);
     });
 }
 
-// Function to clear the autocomplete list
 function clearAutocompleteList(list) {
-    list.innerHTML = ''; // Clear suggestions
-    list.style.display = 'none'; // Hide the list
+    list.innerHTML = ''; 
 }
 
-function selectPlaceById(placeId,autocompleteList) {
-    // Create a new PlacesService instance
+function selectPlaceById(placeId,autocompleteList, inputId) {
     const service = new google.maps.places.PlacesService(map);
 
-    // Get place details using the placeId
     service.getDetails({ placeId: placeId }, (place, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-            // Center the map on the selected place
             map.setCenter(place.geometry.location);
 
-            // Remove the current marker if it exists
             if (currentMarker) {
-                currentMarker.setMap(null); // Remove the marker from the map
+                currentMarker.setMap(null); 
             }
 
-            // Create a new marker for the selected place
             currentMarker = new google.maps.Marker({
                 map: map,
                 position: place.geometry.location,
             });
 
-            // Show the info window for the new marker
-            infowindow.setContent(place.name); // Set the content of the info window
-            infowindow.open(map, currentMarker); // Open the info window on the marker
+            infowindow.setContent(place.name);
+            infowindow.open(map, currentMarker); 
             clearAutocompleteList(autocompleteList);
-
+            document.getElementById(inputId).value = place.name;
         } else {
             console.error('Error fetching place details:', status);
         }
@@ -154,16 +132,9 @@ function showRoute() {
         alert("Please enter both start location and destination.");
         return;
     }
-
-    // Get coordinates for the start location
     getPlaceCoordinates(startLocation)
         .then(startCoords => {
-            // Log start coordinates correctly
-            console.log("Start Coordinates: lat =", startCoords.lat(), "lng =", startCoords.lng());
-
-            // Get coordinates for the destination
             return getPlaceCoordinates(destination).then(destinationCoords => {
-                // Now we have both start and destination coordinates
                 calculateRoute(startCoords, destinationCoords);
             });
         })
@@ -171,6 +142,9 @@ function showRoute() {
             console.error(error);
             alert("Could not find one of the locations. Please check your input.");
         });
+
+    routeVisible=true;
+    document.getElementById("show-route").textContent = "Hide route";
 }
 
 function calculateRoute(startCoords, destinationCoords) {
@@ -184,23 +158,23 @@ function calculateRoute(startCoords, destinationCoords) {
         if (status === google.maps.DirectionsStatus.OK) {
             directionsRenderer.setDirections(result);
         } else {
-            console.error('Directions request failed due to ' + status);
+            alert('Directions request failed due to ' + status);
         }
     });
 }
 
 
 function hideRoute() {
-    directionsRenderer.setMap(null); // Hide the route
-    routeVisible = false; // Set route visibility to false
+    directionsRenderer.setMap(null); 
+    routeVisible = false;
     document.getElementById("show-route").textContent = "Show route"; // Change button text
 }
 
 function toggleRoute() {
     if (routeVisible) {
-        hideRoute(); // Hide the route if it's currently visible
+        hideRoute();
     } else {
-        showRoute(); // Show the route if it's currently hidden
+        showRoute(); 
     }
 }
 
@@ -213,7 +187,6 @@ function showCurrentLocation() {
                 lng: position.coords.longitude
             };
 
-            // Create a red marker for the current location
             currentLocationMarker = new google.maps.Marker({
                 position: currentLocation,
                 map: map,
@@ -228,7 +201,6 @@ function showCurrentLocation() {
                 }
             });
 
-            // Center the map on the user's current location
             infoWindow = new google.maps.InfoWindow({
                 content: `
                 <div style="width: 120px">
@@ -237,8 +209,8 @@ function showCurrentLocation() {
             `});
             infoWindow.open(map, currentLocationMarker);
             map.setCenter(currentLocation);
-            currentLocationVisible = true; // Set visibility to true
-            document.getElementById("show-current").textContent = "Hide"; // Change button text
+            currentLocationVisible = true; 
+            document.getElementById("show-current").textContent = "Hide"; 
         }, () => {
             console.error("Geolocation service failed.");
         });
@@ -249,10 +221,10 @@ function showCurrentLocation() {
 
 function hideCurrentLocation() {
     if (currentLocationMarker) {
-        currentLocationMarker.setMap(null); // Remove the marker from the map
+        currentLocationMarker.setMap(null); 
     }
-    currentLocationVisible = false; // Set visibility to false
-    document.getElementById("show-current").textContent = "Show"; // Change button text
+    currentLocationVisible = false; 
+    document.getElementById("show-current").textContent = "Show"; 
 }
 
 function getPlaceCoordinates(placeName) {
@@ -264,26 +236,26 @@ function getPlaceCoordinates(placeName) {
         }, (results, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK && results[0]) {
                 const location = results[0].geometry.location;
-                resolve(location); // Resolve the Promise with the location
+                resolve(location); 
             } else {
-                reject('Place not found: ' + status); // Reject the Promise if not found
+                reject('Place not found: ' + status); 
             }
         });
     });
 }
 
 const events = [
-    {name: "Meeting at Blanch",
-        time: "2023-10-01T10:00:00",
+    {name: "GDG weekly meeting",
+        time: "2024-12-05",
         location: "Blanchard",
-        notes: "Discuss project updates."
+        notes: "Discuss project updates"
     },
 ];
 
 async function showEventLocations() {
     for (const event of events) {
         try {
-            const location = await getPlaceCoordinates(event.location); // Get coordinates for the event location
+            const location = await getPlaceCoordinates(event.location); 
             const marker = new google.maps.Marker({
                 position: location,
                 map: map,
@@ -308,22 +280,22 @@ async function showEventLocations() {
                     </div>
                  `);
             infowindow.open(map, marker);
-            eventMarkers.push(marker); // Store the marker in the array
+            eventMarkers.push(marker); 
         } catch (error) {
-            console.error(error); // Handle errors (e.g., place not found)
+            console.error(error); 
         }
     }
-    eventLocationsVisible = true; // Set visibility to true
-    document.getElementById("show-event").textContent = "Hide event locations"; // Change button text
+    eventLocationsVisible = true; 
+    document.getElementById("show-event").textContent = "Hide event locations"; 
 }
 
 function hideEventLocations() {
     eventMarkers.forEach(marker => {
-        marker.setMap(null); // Remove each marker from the map
+        marker.setMap(null); 
     });
-    eventMarkers = []; // Clear the markers array
-    eventLocationsVisible = false; // Set visibility to false
-    document.getElementById("show-event").textContent = "Show event locations"; // Change button text
+    eventMarkers = []; 
+    eventLocationsVisible = false; 
+    document.getElementById("show-event").textContent = "Show event locations"; 
 }
 
 /*Menu*/
@@ -331,15 +303,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var menuButton = document.getElementById('menu-button');
     var menuList = document.getElementById('menu-list');
 
-    // Show the menu when the button is clicked
     menuButton.onclick = function (event) {
-        event.stopPropagation(); // Prevent affecting parent elements like the window
-        menuList.classList.toggle('hidden'); // If the window is closed, open it, and vise versa
+        event.stopPropagation(); 
+        menuList.classList.toggle('hidden'); 
     };
 
-    // Closing the menu when clicking anywhere outside of it in the window
     window.onclick = function (event) {
-        //checks if menu is visable and if the click does not occur on menu button
         if (!menuList.classList.contains('hidden') && !menuButton.contains(event.target)) {
             menuList.classList.add('hidden');
         }

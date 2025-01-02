@@ -16,7 +16,7 @@
 
 #login-frame{
     width: 32%;
-    height: 60%;
+    height: 70%;
     top: 50%;
     position: absolute;
     left: 50%;
@@ -40,7 +40,7 @@ h1{
 
 }
 
-#username, #password{
+#username, #password, #google{
     background: rgba(155,191,228,0.5);
     border: none;
     box-shadow: 0px 3px 5px rgb(177, 177, 177);
@@ -50,6 +50,20 @@ h1{
     height: 12%;
     padding: 12px;
     font-size: 14px;
+    color: gray;
+}
+
+#google{
+    color:gray;
+    text-align: center;
+    font-size: 14px;
+}
+
+#google .logo {
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
 }
 
 h2{ 
@@ -83,7 +97,7 @@ h3{
     padding: 12px;
     font-size: 18px;
 }
-#sign-in:hover{
+#sign-in:hover, 
+#google:hover{
     background: rgba(155,191,228);
-
 }

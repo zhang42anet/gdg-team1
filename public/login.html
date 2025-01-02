@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en"></html>
+<html lang="en">
+
+</html>
 <html>
 
 <head>
@@ -15,8 +17,11 @@
     <div id="window">
         <div id="login-frame">
             <h1>Login</h1>
-            <input type="text" id="username" placeholder="Email" /> 
-            <input type="password" id="password" placeholder="Password" /> 
+            <input type="text" id="username" placeholder="Email" />
+            <input type="password" id="password" placeholder="Password" />
+            <button id="google">
+                <img src="google.png" alt="Google Logo" class="logo" />
+            Sign in with Google</button>
             <!-- changed 'forget' to 'forgot'-->
             <h2>Forgot password?</h2>
             <button id="sign-in">Sign in</button>
@@ -27,7 +32,7 @@
                     document.getElementById('sign-in').addEventListener('click', () => {
                         window.location.href = '/'; // Redirect to the root, serving index.html
                     });
-        
+
                     // Redirect for Sign Up button
                     document.getElementById('sign-up').addEventListener('click', () => {
                         window.location.href = '/index.html'; // Redirect to index.html
@@ -36,7 +41,8 @@
             </script>
             <!-- register: redirects user to sign up page -->
             <h2>
-                <a href="signUp.html" style="text-decoration: underline; color: grey;">Don't have an account? Register</a>
+                <a href="signUp.html" style="text-decoration: underline; color: grey;">Don't have an account?
+                    Register</a>
             </h2>
         </div>
     </div>

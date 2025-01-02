@@ -278,9 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
               isWeekly: true
             });
           }
-        } else {
-          currentEvent.setExtendedProp('isWeekly', isWeekly);
-        }
+        } 
         modal.style.display = "none";
       } else {
         alert('Please select an event to update.');
