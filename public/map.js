@@ -39,6 +39,7 @@ window.initMap = function () {
     });
 };
 
+//add search boxes for location input 
 document.addEventListener('DOMContentLoaded', function () {
     initializeAutocomplete("search-input", "autocomplete-list");
     initializeAutocomplete("start-location", "autocomplete-list2");
