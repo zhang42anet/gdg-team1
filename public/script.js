@@ -1,22 +1,23 @@
-//Load content of html into the current  file
+let currentEvent;
+
 document.addEventListener('DOMContentLoaded', function () {
-// testing
+
   //Load in main container 
   var appContainer = document.getElementById('app-container');
   if (!appContainer) {
-    console.error('App container not found');
+    console.error('Window not found');
     return;
   }
   //Load in main window (calendar & todo & add event) 
   var mainContent = document.getElementById('main-content');
   if (!mainContent) {
-    console.error('Main content container not found');
+    console.error('Window not found');
     return;
   }
 
   var calendarEl = document.getElementById('calendar');
   if (!calendarEl) {
-    console.error('Calendar element not found');
+    console.error('Calendar not found');
     return;
   }
 
@@ -71,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
         deleteButton.textContent = 'Completed!';
         deleteButton.addEventListener('click', function () {
           completedList.appendChild(li);
-          li.removeChild(deleteButton); 
+          li.removeChild(deleteButton);
         });
         //Add "Completed" and new item to todo list
         li.appendChild(deleteButton);
@@ -84,16 +85,16 @@ document.addEventListener('DOMContentLoaded', function () {
     console.error('Todo list elements not found');
   }
 
-// Show/Hide completed items
-showButton.onclick = function () {
-  if (completedList.style.display === "none" || completedList.classList.contains('hidden')) {
-      completedList.style.display = "block"; 
-      showButton.textContent = 'Hide'; 
-  } else {
-      completedList.style.display = "none"; 
-      showButton.textContent = 'Show'; 
-  }
-};
+  // Show/Hide completed items
+  showButton.onclick = function () {
+    if (completedList.style.display === "none" || completedList.classList.contains('hidden')) {
+      completedList.style.display = "block";
+      showButton.textContent = 'Hide';
+    } else {
+      completedList.style.display = "none";
+      showButton.textContent = 'Show';
+    }
+  };
 
 
   //Add event window
@@ -118,48 +119,190 @@ showButton.onclick = function () {
     }
   }
 
-  // Initialize Quill notepad
-  var quill = new Quill('#quill-editor', {
-    theme: 'snow',
-    modules: {
-      toolbar: [
-        ['bold', 'italic', 'underline'],
-        ['image'],
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-        [{ 'size': ['small', 'large', 'huge'] }]
-      ]
-    }
-  });
 
   document.getElementById("add-event-button").onclick = function () {
     const title = document.getElementById('event-title').value.trim();
-    const start = document.getElementById('event-start').value;
-    const end = document.getElementById('event-end').value;
-    const notes = quill.root.innerHTML;
+    const startString = document.getElementById('event-start').value; // Get the start value as a string
+    const endString = document.getElementById('event-end').value; // Get the end value as a string
+    const location = document.getElementById('event-location').value;
+    const notes = document.getElementById('event-notes').value;
+    const isWeekly = document.getElementById('weekly-event').checked; // Capture checkbox state
 
-    if (title && start) {//Check for null entry in title and start date
+    if (title && startString) {
+      const start = new Date(startString); // Convert start string to Date object
+      const end = endString ? new Date(endString) : null; // Convert end string to Date object if provided
       const event = {
         title: title,
         start: start,
-        end: end || null,
-        notes: notes
+        end: end,
+        location: location || null,
+        notes: notes || null,
+        isWeekly: isWeekly // Include weekly event status
       };
 
-      calendar.addEvent(event);
+      // Handle weekly events
+      if (isWeekly) {
+        for (let i = 0; i < 26; i++) { // Example: Create 10 weekly occurrences
+          const nextWeek = new Date(start);
+          nextWeek.setDate(start.getDate() + (i * 7)); // Add 7 days for each occurrence
+          calendar.addEvent({
+            title: title,
+            start: nextWeek.toISOString(),
+            end: end ? new Date(nextWeek.getTime() + (end - start)).toISOString() : null,
+            location: location,
+            notes: notes,
+            isWeekly: true
+          });
+        }
 
-      //Clear entry fields
-      document.getElementById('event-title').value = '';
-      document.getElementById('event-start').value = '';
-      document.getElementById('event-end').value = '';
-      quill.setContents([]);
 
-      // Close the add event window
-      modal.style.display = "none";
-    } else {
-      alert('Please fill in event title and start time.');
-    }
+      } else {
+        calendar.addEvent(event);
+      }
+              // Clear entry fields
+              document.getElementById('event-title').value = '';
+              document.getElementById('event-start').value = '';
+              document.getElementById('event-end').value = '';
+              document.getElementById('event-location').value = '';
+              document.getElementById('event-notes').value = '';
+              document.getElementById('weekly-event').checked = false; // Reset checkbox
+      
+              // Close the modal
+              modal.style.display = "none";
+    };
+  }
+
+  calendar.on('eventClick', function (info) {
+    currentEvent = info.event; // Store the clicked event
+
+    // Populate the modal fields with event details
+    document.getElementById('event-title').value = currentEvent.title || ''; // Set the title
+    document.getElementById('event-start').value = formatDateForInput(currentEvent.start); // Format for datetime-local
+    document.getElementById('event-end').value = currentEvent.end ? formatDateForInput(currentEvent.end) : ''; // Format for datetime-local
+    document.getElementById('event-location').value = currentEvent.extendedProps.location || ''; // Set the location
+    document.getElementById('event-notes').value = currentEvent.extendedProps.notes || ''; // Set the notes in the textarea
+    document.getElementById('weekly-event').checked = currentEvent.extendedProps.isWeekly || false; // Set the checkbox state
+
+    // Show the modal
+    modal.style.display = "block";
+
+    document.getElementById("add-event-button").onclick = function () {
+      const title = document.getElementById('event-title').value.trim();
+      const startString = document.getElementById('event-start').value; // Get the start value as a string
+      const endString = document.getElementById('event-end').value; // Get the end value as a string
+      const location = document.getElementById('event-location').value;
+      const notes = document.getElementById('event-notes').value;
+      const isWeekly = document.getElementById('weekly-event').checked; // Capture checkbox state
+  
+      // Convert start and end strings to Date objects
+      const start = new Date(startString);
+      const end = endString ? new Date(endString) : null;
+  
+      // Check if currentEvent is defined before accessing its properties
+      if (currentEvent) {
+          // Check if the event is a weekly event
+          if (currentEvent.extendedProps.isWeekly) {
+              // Delete all occurrences of the old weekly event
+              const allEvents = calendar.getEvents(); // Get all events from the calendar
+              allEvents.forEach(e => {
+                  if (e.title === currentEvent.title) {
+                      e.remove(); // Remove the old event
+                  }
+              });
+          calendar.addEvent({
+            title: title,
+                      start: start,
+                      end: end,
+                      location: location || null,
+                      notes: notes || null,
+                      isWeekly: false // Mark as a weekly event
+          })
+            }
+
+          if (isWeekly){
+            currentEvent.setProp('title', title); // Update the title
+            currentEvent.setStart(start); // Update the start time
+            currentEvent.setEnd(end); // Update the end time
+            currentEvent.setExtendedProp('location', location); // Update the location
+            currentEvent.setExtendedProp('notes', notes); // Update the notes
+            currentEvent.setExtendedProp('isWeekly', isWeekly); // Update the weekly status
+              // Create new occurrences for the updated weekly event
+              for (let i = 1; i < 26; i++) { // Example: Create 10 occurrences
+                  const nextWeek = new Date(start);
+                  nextWeek.setDate(start.getDate() + (i * 7)); // Add 7 days for each occurrence
+                  calendar.addEvent({
+                      title: title,
+                      start: nextWeek.toISOString(),
+                      end: end ? new Date(nextWeek.getTime() + (end - start)).toISOString() : null,
+                      location: location || null,
+                      notes: notes || null,
+                      isWeekly: true // Mark as a weekly event
+                  });
+              }
+          } else {
+              // Update the event properties for non-weekly events
+              currentEvent.setProp('title', title); // Update the title
+              currentEvent.setStart(start); // Update the start time
+              currentEvent.setEnd(end); // Update the end time
+              currentEvent.setExtendedProp('location', location); // Update the location
+              currentEvent.setExtendedProp('notes', notes); // Update the notes
+              currentEvent.setExtendedProp('isWeekly', isWeekly); // Update the weekly status
+          }
+          // Close the modal
+          modal.style.display = "none";
+      } else {
+          alert('No event selected for update. Please select an event to update.');
+      }
   };
-});
+      document.getElementById("delete-event-button").onclick = function () {
+        const event = info.event; // Assuming you have access to the event object
+
+        // Confirmation prompt
+        const userConfirmed = confirm("Are you sure you want to delete this event?");
+        if (!userConfirmed) {
+            // If the user cancels, exit the function
+            return; 
+        }
+
+        if (event.extendedProps.isWeekly) {
+          // Logic to delete all occurrences of the weekly event
+          const allEvents = calendar.getEvents(); // Get all events from the calendar
+          allEvents.forEach(e => {
+            if (e.title === event.title) {
+              e.remove(); // Remove the event
+            }
+          });
+          alert('The event is deleted for all weeks. ');
+        } else {
+          // Logic to delete the single event
+          event.remove(); // Remove the single event
+          alert('The event has been deleted.');
+        }
+                      // Clear entry fields
+                      document.getElementById('event-title').value = '';
+                      document.getElementById('event-start').value = '';
+                      document.getElementById('event-end').value = '';
+                      document.getElementById('event-location').value = '';
+                      document.getElementById('event-notes').value = '';
+                      document.getElementById('weekly-event').checked = false; // Reset checkbox
+                      // Close the modal after deletion
+                      modal.style.display = "none";
+      };
+
+    });
+
+
+
+    // Function to format date for datetime-local input
+    function formatDateForInput(date) {
+      const localDate = new Date(date); // Create a new Date object
+      const offset = localDate.getTimezoneOffset(); // Get timezone offset in minutes
+      localDate.setMinutes(localDate.getMinutes() - offset); // Adjust for timezone offset
+      // Format to YYYY-MM-DDTHH:MM
+      return localDate.toISOString().slice(0, 16);
+    }
+
+  });
 
 /*Menu*/
 

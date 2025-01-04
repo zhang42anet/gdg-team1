@@ -1,8 +1,142 @@
 body {
-    background-image: url('campusMap.png'); /* Path to the PNG image */
     background-size: cover; /* Cover the entire viewport */
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     height: 100vh; /* Full viewport height */
     margin: 0; /* Remove default margin */
+    margin: 0px 20px 20px;
+    font-family: Arial, sans-serif;
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    /* Create between title and menu button */
+    padding: 10px;
+    /* Add padding arround content */
+}
+
+#app-title, #search-title, #route, #event-location, #current{
+    color: rgba(73, 63, 38, 0.9);
+    margin-bottom: 5px;
+    font-family: 'Jacques Francois', serif !important;
+}
+
+/* 
+Style for menu list
+ */
+
+ #menu-button {
+    background-color: rgba(73, 63, 38, 0.5);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#menu-button:hover {
+    background-color: rgba(73, 63, 38, 0.7);
+}
+
+ #menu-list {
+    position: fixed;
+    top: -20px;
+    right: 0;
+    width: 200px;
+    height: 100%;
+    /* height of entire screen */
+    background-color: rgba(73, 63, 38, 0.9);
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    font-weight: bold;
+    font-family: 'Jacques Francois', serif !important;
+}
+
+#menu-list.hidden {
+    display: none;
+}
+
+#menu-list ul {
+    list-style-type: none;
+    padding: 0px;
+}
+
+#menu-list li {
+    margin: 15px;
+}
+
+#menu-list a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+#menu-list a:hover {
+    color: grey;
+}
+
+/* 
+Style for map
+*/
+
+#map-frame{
+    display: flex;
+}
+
+#map {
+    width: 70%;
+    align-items: flex-start;
+    height: 550px;
+}
+
+#search-container{
+    background-color: #FDF3E1;
+    padding: 15px;
+    margin-left: 10px;
+}
+
+#search-input {
+    padding: 10px; 
+    width: 300px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+}
+
+#autocomplete-list {
+    max-height: 200px; 
+    width: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc; 
+    background-color: white; 
+    display: none; 
+    justify-content: right;
+}
+
+#autocomplete-list ol {
+    border: 1px;
+    font-weight: bold;
+}
+
+
+
+#show-route, #show-event, #show-current{
+    background-color: rgba(73, 63, 38, 0.5);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 8px;
+}
+
+#show-route:hover, #show-event:hover, #show-current:hover{
+    background-color: rgba(73, 63, 38, 0.7);
 }

@@ -16,9 +16,6 @@
   <!-- Link to FullCalendar-->
   <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
   <script src="script.js"></script>
-  <!-- Link to Quill (Text editing library) -->
-  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 </head>
 
 <!-- 
@@ -48,7 +45,7 @@ Structure of elements for index.html:
         <li><a href="login.html">Login page</a></li>
         <li><a href="index.html">Calendar</a></li>
         <li><a href="map.html">Campus Map</a></li>
-        <!-- <li><a href="#">Map</a></li> -->
+        <li><a href="my_prefrence.html">My Prefrence</a></li>         
       </ul>
     </div>
 
@@ -90,14 +87,28 @@ Structure of elements for index.html:
           <label for="event-end">End time:</label>
           <input type="datetime-local" id="event-end">
         </div>
-        <!-- Create note box with Quill -->
+        <!-- Create location entry box -->
+        <div class="form-group">
+          <label for="event-location">Location:</label>
+          <input type="text" id="event-location" placeholder="Location" required>
+        </div>
+        <!-- Create a checkbox for recurring events -->
+        <label2>
+          <input type="checkbox" id="weekly-event">Weekly event
+        </label2>
+        <!-- Create a textarea for notes -->
         <div class="form-group">
           <label for="event-notes">Notes:</label>
-          <div id="quill-editor"></div> <!-- Quill editor -->
+          <textarea id="event-notes" placeholder="Enter your notes here..." rows="8"></textarea>
         </div>
-        <!-- Create add event button-->
-        <button id="add-event-button">Add Event</button>
+        <!-- Create add event and delete event button-->
+         <div id="button-frame">
+          <button id="add-event-button">Add Event</button>
+          <button id="delete-event-button">Delete Event</button>
+         </div>
+
       </div>
     </div>
+
 
 </body>
