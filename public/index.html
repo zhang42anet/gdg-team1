@@ -99,5 +99,69 @@ Structure of elements for index.html:
         <button id="add-event-button">Add Event</button>
       </div>
     </div>
+    
+    <script>
+      document.getElementById('add-todo').addEventListener('click', () => {
+        const userID = localStorage.getItem('userID');  // Get userID from local storage
+        const toDo = document.getElementById('new-todo').value;
+    
+        fetch('http://localhost:3006/add-todo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userID, toDo }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.message);
+          document.getElementById('new-todo').value = ''; // Clear input
+          loadTodos();
+        })
+        .catch(error => console.error('Error:', error));
+      });
+    
+      function loadTodos() {
+        const userID = localStorage.getItem('userID');
+        
+        fetch(`http://localhost:3006/get-todos/${userID}`)
+        .then(response => response.json())
+        .then(data => {
+          const todoList = document.getElementById('todos');
+          todoList.innerHTML = '';
+    
+          data.forEach(todo => {
+            const li = document.createElement('li');
+            li.textContent = todo.toDo;
+    
+            const completeButton = document.createElement('button');
+            completeButton.textContent = 'Completed!';
+            completeButton.style.backgroundColor = 'green';
+            completeButton.onclick = () => completeTodo(todo.id);
+            
+            li.appendChild(completeButton);
+            todoList.appendChild(li);
+          });
+        })
+        .catch(error => console.error('Error:', error));
+      }
+    
+      function completeTodo(todoID) {
+        fetch(`http://localhost:3006/complete-todo/${todoID}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.message);
+          loadTodos();
+        })
+        .catch(error => console.error('Error:', error));
+      }
+    
+      // Load todos when the page loads
+      window.onload = loadTodos;
+    </script>
+    
+    
+    
 
 </body>
