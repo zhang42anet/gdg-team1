@@ -31,8 +31,14 @@ document.addEventListener('DOMContentLoaded', function () {
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
     },
     views: {
-      listDay: { buttonText: 'List' }
+      listDay: { buttonText: 'List' },
+      dayGridMonth: {buttonText: 'Month'},
+      timeGridWeek: {buttonText: 'Week'}, 
+      timeGridDay: {buttonText: 'Day'}
     },
+    buttonText: {
+      today: 'Today' // Capitalized
+  },
     //adjust window to size of window
     windowResize: function (view) {
       if (window.innerWidth < 768) {
