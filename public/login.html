@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"></html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -8,37 +7,49 @@
     <link href="https://fonts.googleapis.com/css?family=Jacques+Francois&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=IM+FELL+Great+Primer&display=swap" rel="stylesheet" />
     <link href="login.css" rel="stylesheet" />
-    <title>Document</title>
+    <title>Login</title>
 </head>
 
 <body>
     <div id="window">
         <div id="login-frame">
             <h1>Login</h1>
-            <input type="text" id="username" placeholder="Email" /> 
-            <input type="password" id="password" placeholder="Password" /> 
-            <!-- changed 'forget' to 'forgot'-->
-            <h2>Forgot password?</h2>
+            <input type="email" id="email" placeholder="Email" required /> 
+            <input type="password" id="password" placeholder="Password" required /> 
             <button id="sign-in">Sign in</button>
-            <!-- script redirects users to index.html-->
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    // Redirect for Sign In button
-                    document.getElementById('sign-in').addEventListener('click', () => {
-                        window.location.href = '/'; // Redirect to the root, serving index.html
-                    });
-                    // Redirect for Sign Up button
-                    document.getElementById('sign-up').addEventListener('click', () => {
-                        window.location.href = '/index.html'; // Redirect to index.html
-                    });
-                });
-            </script>
-            <!-- register: redirects user to sign up page -->
             <h2>
                 <a href="signUp.html" style="text-decoration: underline; color: grey;">Don't have an account? Register</a>
             </h2>
         </div>
     </div>
-</body>
 
+    <script>
+        document.getElementById('sign-in').addEventListener('click', () => {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (!email || !password) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            fetch('http://localhost:3006/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    localStorage.setItem('userID', data.userID);  // Store user ID in local storage
+                    window.location.href = 'index.html'; // Redirect to main page
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+
+</body>
 </html>
+

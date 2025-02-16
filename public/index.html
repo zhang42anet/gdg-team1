@@ -105,6 +105,11 @@ Structure of elements for index.html:
         const userID = localStorage.getItem('userID');  // Get userID from local storage
         const toDo = document.getElementById('new-todo').value;
     
+        if (!toDo.trim()) {
+          alert("Please enter a valid todo!");
+          return;
+        }
+    
         fetch('http://localhost:3006/add-todo', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -114,52 +119,74 @@ Structure of elements for index.html:
         .then(data => {
           alert(data.message);
           document.getElementById('new-todo').value = ''; // Clear input
-          loadTodos();
+    
+          // Instead of reloading everything, just append the new to-do
+          addTodoToList({ id: data.id, toDo, currStatus: 0 });
+    
         })
         .catch(error => console.error('Error:', error));
       });
+  
+        function loadTodos() {
+          const userID = localStorage.getItem('userID');
+      
+          fetch(`http://localhost:3006/get-todos/${userID}`)
+          .then(response => response.json())
+          .then(data => {
+            const todoList = document.getElementById('todos');
+            todoList.innerHTML = '';  // Clear previous todos before rendering
+      
+            data.forEach(todo => {
+              addTodoToList(todo);
+            });
+          })
+          .catch(error => console.error('Error:', error));
+        }
+
+      
     
-      function loadTodos() {
-        const userID = localStorage.getItem('userID');
-        
-        fetch(`http://localhost:3006/get-todos/${userID}`)
-        .then(response => response.json())
-        .then(data => {
+    
+        function addTodoToList(todo) {
           const todoList = document.getElementById('todos');
-          todoList.innerHTML = '';
-    
-          data.forEach(todo => {
-            const li = document.createElement('li');
-            li.textContent = todo.toDo;
-    
-            const completeButton = document.createElement('button');
-            completeButton.textContent = 'Completed!';
-            completeButton.style.backgroundColor = 'green';
-            completeButton.onclick = () => completeTodo(todo.id);
-            
-            li.appendChild(completeButton);
-            todoList.appendChild(li);
-          });
-        })
-        .catch(error => console.error('Error:', error));
-      }
-    
-      function completeTodo(todoID) {
-        fetch(`http://localhost:3006/complete-todo/${todoID}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-        })
-        .then(response => response.json())
-        .then(data => {
-          alert(data.message);
-          loadTodos();
-        })
-        .catch(error => console.error('Error:', error));
-      }
-    
-      // Load todos when the page loads
-      window.onload = loadTodos;
+          const li = document.createElement('li');
+          li.textContent = todo.toDo;
+      
+          const completeButton = document.createElement('button');
+          completeButton.textContent = 'Completed!';
+          completeButton.style.backgroundColor = 'green';
+          completeButton.onclick = () => completeTodo(todo.id, li); // Pass correct `id`
+      
+          li.appendChild(completeButton);
+          todoList.appendChild(li);
+        }
+      
+        function completeTodo(todoID, todoElement) {
+          console.log("Marking todo as completed:", todoID); // Debugging log
+      
+          fetch(`http://localhost:3006/complete-todo/${todoID}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log("Response from server:", data); // Debugging log
+      
+            if (data.success) {
+              alert(data.message);
+              todoElement.remove(); // Remove from UI
+            } else {
+              alert("Failed to update todo. It might already be completed.");
+            }
+          })
+          .catch(error => console.error('Error:', error));
+        }
+      
+      
+      
+
+      
     </script>
+    
     
     
     

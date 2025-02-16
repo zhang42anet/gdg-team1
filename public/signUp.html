@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"></html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -8,31 +7,55 @@
     <link href="https://fonts.googleapis.com/css?family=Jacques+Francois&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=IM+FELL+Great+Primer&display=swap" rel="stylesheet" />
     <link href="signUp.css" rel="stylesheet"/>
-    <title>Document</title>
+    <title>Sign Up</title>
 </head>
 
 <body>
     <div id="window">
         <div id="login-frame">
-            <!-- redirects user to login page -->
             <h4>
                 <a href="login.html" style="text-decoration: underline; color: black;">Have an account? Login</a>
             </h4> 
             <h1>Sign Up</h1>
-            <input type="text" id="name" placeholder="Name" /> 
-            <input type="text" id="username" placeholder="Email" /> 
-            <input type="password" id="password" placeholder="Password" /> 
+            <input type="text" id="name" placeholder="Full Name" required /> 
+            <input type="email" id="email" placeholder="Email" required /> 
+            <input type="password" id="password" placeholder="Password" required /> 
+            <input type="password" id="confirm-password" placeholder="Confirm Password" required />
             <button id="sign-up">Sign up</button>
-            <!-- script redirects users to login.html-->
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    document.getElementById('sign-up').addEventListener('click', () => {
-                        window.location.href = '/login.html'; // Redirect to login.html
-                    });
-                });
-            </script>
         </div>
     </div>
-</body>
 
+    <script>
+        document.getElementById('sign-up').addEventListener('click', () => {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirm-password').value.trim();
+
+            if (!name || !email || !password || !confirmPassword) {
+                alert("Please fill in all fields.");
+                return;
+            }
+            if (password !== confirmPassword) {
+                alert("Passwords do not match.");
+                return;
+            }
+
+            fetch('http://localhost:3006/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    window.location.href = 'login.html'; // Redirect to login page after successful signup
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+
+</body>
 </html>
