@@ -14,9 +14,26 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
-//route to serve login.html
+// Route to serve login.html
 app.get('/login.html', (req, res) => {
     res.sendFile(path.join(__dirname, '../public', 'login.html'));
+});
+
+// Login function
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+
+    // Dummy user credentials (Replace this with real authentication logic)
+    const validUser = {
+        username: "testuser",
+        password: "password123"
+    };
+
+    if (username === validUser.username && password === validUser.password) {
+        res.status(200).json({ message: "Login successful", success: true });
+    } else {
+        res.status(401).json({ message: "Invalid credentials", success: false });
+    }
 });
 
 // Start the server
